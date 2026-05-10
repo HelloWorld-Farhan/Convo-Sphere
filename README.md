@@ -17,7 +17,12 @@
 
 ## 📸 Screenshots
 
-> *(Add your app screenshots here)*
+<p align="center">
+  <img src="screenshots/registrationviewinphone.png" width="30%" alt="Registration Screen"/>
+  <img src="screenshots/loginviewinphone.png" width="30%" alt="Login Screen"/>
+</p>
+
+> 📁 **Note:** Place the screenshot images in a `screenshots/` folder at the root of the repository so they render correctly on GitHub.
 
 ---
 
@@ -25,7 +30,7 @@
 
 | Feature | Description |
 |---|---|
-| 🔐 **User Registration** | Create a new account with email & password |
+| 🔐 **User Registration** | Create a new account with profile picture, username, phone, email & password |
 | 🔑 **Login / Logout** | Secure Firebase Authentication |
 | 🔁 **Password Reset** | Reset password via email link |
 | 💬 **Real-Time Chat** | Instant messaging via Firebase Realtime Database |
@@ -82,6 +87,10 @@ Convo-Sphere/
 │   ├── google-services.json                           ← Firebase config (you must add this!)
 │   └── build.gradle                                   ← App-level Gradle
 │
+├── screenshots/                                       ← App screenshots for README
+│   ├── registrationviewinphone.png
+│   └── loginviewinphone.png
+│
 ├── build.gradle                                       ← Project-level Gradle
 └── README.md
 ```
@@ -116,6 +125,9 @@ cd Convo-Sphere
 Or download the ZIP directly:
 > Click **Code → Download ZIP** on GitHub → Extract the folder
 
+Alternatively, download the full project source from Google Drive:  
+👉 **[Download from Google Drive](https://drive.google.com/file/d/1JQwhlP0-MBekybucXZrhQinG4I1AN3Tw/view?usp=sharing)**
+
 ---
 
 ### Step 2 — Create a Firebase Project
@@ -132,7 +144,7 @@ Or download the ZIP directly:
 
 ### Step 3 — Register Your Android App in Firebase
 
-1. In the Firebase Console, click the **Android icon** (</>) to add an Android app
+1. In the Firebase Console, click the **Android icon** (`</>`) to add an Android app
 2. Enter the **package name** — this must exactly match the one in your `AndroidManifest.xml`  
    *(e.g., `com.yourpackage.convosphere`)*
 3. Enter a nickname (optional) and click **Register App**
@@ -203,10 +215,7 @@ FCM is enabled by default when you create a Firebase project. No additional setu
 
 #### Project-level `build.gradle` (root)
 
-Make sure the `plugins` or `dependencies` block includes the Google Services classpath:
-
 ```groovy
-// build.gradle (Project level)
 buildscript {
     repositories {
         google()
@@ -221,7 +230,7 @@ buildscript {
 
 #### App-level `app/build.gradle`
 
-Make sure the **plugins** block at the top includes:
+Plugins block at the top:
 
 ```groovy
 plugins {
@@ -230,7 +239,7 @@ plugins {
 }
 ```
 
-And the **dependencies** block:
+Dependencies block:
 
 ```groovy
 dependencies {
@@ -247,7 +256,7 @@ dependencies {
     // Firebase Realtime Database — real-time message sync
     implementation 'com.google.firebase:firebase-database'
 
-    // Firebase Storage — for profile picture uploads (optional)
+    // Firebase Storage — for profile picture uploads
     implementation 'com.google.firebase:firebase-storage'
 
     // Firebase Cloud Messaging — push notifications
@@ -305,7 +314,7 @@ Also ensure `MyFirebaseMessagingService` is declared inside `<application>`:
 
 ### Step 8 — Build & Run the App
 
-#### On a Physical Device (Recommended)
+#### Option A — Run on a Physical Device (Recommended)
 
 1. Enable **Developer Options** on your phone:
    - `Settings → About Phone` → Tap **Build Number** 7 times
@@ -313,8 +322,9 @@ Also ensure `MyFirebaseMessagingService` is declared inside `<application>`:
 2. Connect your phone via USB
 3. Select your device from the device dropdown in Android Studio
 4. Click ▶️ **Run** (or press `Shift + F10`)
+5. Grant all requested permissions when prompted
 
-#### On an Emulator
+#### Option B — Run on an Emulator
 
 1. Open **Device Manager** in Android Studio
 2. Create a virtual device: **Pixel 6**, **API 33+**
@@ -331,12 +341,14 @@ splash.java (Launch)
    [Checks if user is already logged in]
       ├── Already logged in  →  MainActivity.java (User List)
       └── Not logged in      →  login.java
-                                    ├── New user?  →  Registration.java
-                                    └── Forgot password?  →  ResetPassword.java
+                                    ├── New user?           →  Registration.java
+                                    │      └── Enter: Profile Picture, Username,
+                                    │               Phone, Email, Password → SignUp
+                                    └── Forgot password?    →  ResetPassword.java
                                               ↓
                                     MainActivity.java (User List)
-                                          ↓
-                                    chatwindo.java (Chat Window)
+                                          ↓ Tap any user
+                                    chatwindo.java (Real-Time Chat Window)
                                           ↑
                                     SettingActivity.java (Profile & Settings)
 ```
@@ -350,11 +362,11 @@ splash.java (Launch)
   "users": {
     "USER_UID_1": {
       "name": "Farhan Khalid",
-      "email": "farhan@example.com",
+      "email": "farhankhalid17968@gmail.com",
+      "phone": "+91XXXXXXXXXX",
       "profileImage": "https://...",
       "status": "online"
-    },
-    "USER_UID_2": { ... }
+    }
   },
   "messages": {
     "SENDER_UID_RECEIVER_UID": {
@@ -374,7 +386,7 @@ splash.java (Launch)
 
 ### ❌ `google-services.json` Not Found / Build Fails
 
-- Make sure `google-services.json` is placed in the `app/` folder (NOT the root project folder)
+- Make sure `google-services.json` is inside the `app/` folder (NOT the project root)
 - Confirm the package name in the JSON matches your `AndroidManifest.xml` exactly
 - Do a clean rebuild: `Build → Clean Project` → `Build → Rebuild Project`
 
@@ -394,7 +406,7 @@ splash.java (Launch)
 
 - Confirm **Email/Password** sign-in is enabled in Firebase → Authentication → Sign-in method
 - Check that the email format is valid (e.g., `user@example.com`)
-- Confirm Firebase Auth is initialized before use
+- Make sure passwords match and meet minimum length (6 characters)
 
 ### ❌ Push Notifications Not Received
 
@@ -404,7 +416,7 @@ splash.java (Launch)
 
 ### ❌ Profile Images Not Loading
 
-- Glide dependency must be in `build.gradle`
+- Confirm Glide dependency is in `build.gradle`
 - Confirm Firebase Storage rules allow read access
 - Check internet permission in manifest
 
@@ -420,7 +432,7 @@ splash.java (Launch)
 | Push Notifications | Firebase Cloud Messaging (FCM) |
 | File Storage | Firebase Storage |
 | Image Loading | Glide 4.16.0 |
-| Profile Image View | CircleImageView |
+| Profile Image View | CircleImageView 3.1.0 |
 | UI Framework | Material Design 3 |
 | Min SDK | API 21 (Android 5.0) |
 | Target SDK | API 34 (Android 14) |
@@ -441,8 +453,8 @@ splash.java (Launch)
 ## 👨‍💻 Author
 
 **Farhan Khalid** — Android Developer  
-📧 farhankhalid179@gmail.com  
-🔗 [LinkedIn](https://www.linkedin.com/in/farhan-khalid)  
+📧 farhankhalid17968@gmail.com  
+🔗 [LinkedIn](https://www.linkedin.com/in/farhan-khalid-117514259/)  
 🐙 [GitHub](https://github.com/HelloWorld-Farhan)
 
 ---
@@ -477,4 +489,4 @@ If you found this project helpful, consider giving it a ⭐ on GitHub!
 
 ---
 
-<p align="center">Made with ❤️ — Fast, real-time, and secure messaging for everyone</p>
+<p align="center">Made with ❤️ in India — Fast, real-time, and secure messaging for everyone</p>
